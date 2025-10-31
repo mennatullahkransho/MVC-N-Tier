@@ -1,0 +1,25 @@
+﻿@using MVC.BLL.ModelVM.Department
+@model CreateDepartmentVM
+
+@{
+    ViewData["Title"] = "Create Department";
+}
+
+<div class="card">
+    <div class="card-body">
+        <form asp-action="SaveData" asp-controller="Department" enctype="multipart/form-data">
+            <div class="mb-3">
+                <label for="Name" class="form-label">Name</label>
+                <input asp-for="Name" type="text" class="form-control" id="Name">
+                <span class="text-danger" asp-validation-for="Name"></span>
+            </div>
+            <div class="mb-3">
+                <label for="Area" class="form-label">Area</label>
+                <input asp-for="Area" type="text" class="form-control" id="Salary">
+                <span class="text-danger" asp-validation-for="Area"></span>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+</div>

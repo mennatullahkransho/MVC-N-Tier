@@ -1,0 +1,72 @@
+﻿@using MVC.BLL.ModelVM.Employee
+@using MVC.BLL.ModelVM.ResultResponse
+@model Response<List<GetEmployeeVM>>
+
+    @if(Model.IsHaveErrorOrNot)
+{
+    <p>@Model.ErrorMessage</p>
+
+}
+else
+{
+    <p>
+        <a asp-action="Create" class="btn btn-primary">Create a new employee </a>
+    </p>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Age</th>
+                <th>Profile</th>
+                <th>Salary</th>
+                <th>Department</th>
+                <th>IsDeleted</th>
+				<th>Actions</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var e in Model.Result)
+            {
+                <tr>
+                    <td>@e.Id</td>
+                    <td>@e.Name</td>
+                    <td>@e.Age</td>
+                    <td>
+                        @{
+                            var imgSrc = string.IsNullOrEmpty(e.File)
+                            ? Url.Content("~/Files/female.jpeg")
+                            : Url.Content("~/Files/" + e.File);
+                        }
+                        <img src="@imgSrc" width="50" height="50" />
+                        @if (!string.IsNullOrEmpty(e.File))
+                        {
+                            <a download href="@Url.Content("~/Files/" + e.File)">Download</a>
+                        }
+                    </td>
+
+                    <td>@String.Format("{0:N2}", e.Salary)</td>
+                    <td>@(e.Department != null ? $"{e.Department.Name} ({e.Department.Area})" : "-")</td>
+					<td>@(e.IsDeleted ? "Yes" : "No")</td>
+                    <td>
+                        <a asp-action="GetById" asp-controller="Employee" asp-route-id="@e.Id" class="btn btn-sm btn-info">Details</a>
+                        <a asp-action="Edit" asp-controller="Employee" asp-route-id="@e.Id" class="btn btn-sm btn-warning">Edit</a>
+
+                        <a asp-action="ToggleStatus" asp-controller="Employee" asp-route-id="@e.Id"
+                           class="btn btn-sm @(e.IsDeleted ? "btn-success" : "btn-danger")"
+                           onclick="return confirm('Are you sure you want to toggle this employee?')">
+                            @(e.IsDeleted ? "Restore" : "Delete")
+                        </a>
+                        @Html.AntiForgeryToken()
+                          
+                        
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+

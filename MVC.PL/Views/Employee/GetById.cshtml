@@ -1,0 +1,49 @@
+﻿@using MVC.BLL.ModelVM.Employee
+@using MVC.BLL.ModelVM.ResultResponse
+@model GetEmployeeVM
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Age</th>
+            <th>Profile</th>
+            <th>Salary</th>
+            <th>Departmnt</th>
+
+
+
+
+        </tr>
+    </thead>
+    <tbody>
+
+        <tr>
+            <td>@Model.Id</td>
+            <td>@Model.Name</td>
+            <td>@Model.Age</td>
+            <td>
+                @{
+                    var imgSrc = string.IsNullOrEmpty(Model.File)
+                    ? Url.Content("~/Files/female.jpeg")
+                    : Url.Content("~/Files/" + Model.File);
+                }
+                <img src="@imgSrc" width="50" height="50" />
+                @if (!string.IsNullOrEmpty(Model.File))
+                {
+                    <a download href="@Url.Content("~/Files/" + Model.File)">Download</a>
+                }
+            </td>
+            <td>@Model.Salary</td>
+            <td>@Model.Department.Name</td>
+
+
+
+        </tr>
+
+    </tbody>
+</table>
+
+
+
