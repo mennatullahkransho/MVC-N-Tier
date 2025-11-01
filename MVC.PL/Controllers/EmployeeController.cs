@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using MVC.BLL.Helper;
 using MVC.BLL.ModelVM.Department;
@@ -8,6 +9,8 @@ using MVC.BLL.Services.Implementaion;
 
 namespace MVC.PL.Controllers
 {
+    
+
     public class EmployeeController : Controller
     {
         private readonly IEmployeeService employeeService;
@@ -17,12 +20,13 @@ namespace MVC.PL.Controllers
             this.employeeService = employeeService;
             this.departmentService = departmentService;
         }
+        //[Authorize(Roles = "Admin")]
         public IActionResult Index()
         {
             var result = employeeService.GetAll(true);
             return View(result);
         }
-        public IActionResult GetById(int Id)
+        public IActionResult GetById(string Id)
         {
             var result = employeeService.GetById(Id);
             if (result == null || result.IsHaveErrorOrNot || result.Result == null)
@@ -60,7 +64,7 @@ namespace MVC.PL.Controllers
 
         }
 
-        public IActionResult Edit(int Id)
+        public IActionResult Edit(string Id)
         {
             var resp = employeeService.GetById(Id);
             if (resp == null || resp.IsHaveErrorOrNot || resp.Result == null)
@@ -104,7 +108,7 @@ namespace MVC.PL.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        public IActionResult ToggleStatus(int id)
+        public IActionResult ToggleStatus(string id)
         {
             var result = employeeService.ToggleStatus(id);
             return RedirectToAction(nameof(Index));

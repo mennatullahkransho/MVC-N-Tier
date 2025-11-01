@@ -1,4 +1,6 @@
-﻿using MVC.BLL.ModelVM.Employee;
+﻿using Microsoft.AspNetCore.Identity;
+using MVC.BLL.ModelVM.Account;
+using MVC.BLL.ModelVM.Employee;
 using MVC.BLL.ModelVM.ResultResponse;
 
 
@@ -8,10 +10,11 @@ namespace MVC.BLL.Services.Abstraction
     {
         Response<List<GetEmployeeVM>>GetActiveEmployees();
         Response<List<GetEmployeeVM>> GetNotActiveEmployees();
-        Response<bool> ToggleStatus(int Id);
-        Response<GetEmployeeVM> GetById(int Id);
+        Response<bool> ToggleStatus(string Id);
+        Response<GetEmployeeVM> GetById(string Id);
         Response<List<GetEmployeeVM>> GetAll(bool includeDeleted );
-        Response<int> Create(CreateEmployeeVM createEmployee); 
+        Task<IdentityResult> RegisterEmployeeAsync(RegisterEmployeeVM model);
+        Response<string> Create(CreateEmployeeVM createEmployee); 
         Response<bool> Edit(EditEmployeeVM editEmployee);
 
 

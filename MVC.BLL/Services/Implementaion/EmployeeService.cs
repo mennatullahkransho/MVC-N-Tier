@@ -1,9 +1,12 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Identity;
 using MVC.BLL.Helper;
+using MVC.BLL.ModelVM.Account;
 using MVC.BLL.ModelVM.Employee;
 using MVC.DAL.Entities;
 using MVC.DAL.Repo.Abstraction;
 using MVC.DAL.Repo.Implementation;
+using System.Data;
 
 namespace MVC.BLL.Services.Implementaion
 {
@@ -13,17 +16,19 @@ namespace MVC.BLL.Services.Implementaion
         private readonly IEmployeeRepo employee;
         private readonly IMapper mapper;
         private readonly IDepartmentService departmentService;
+        private readonly UserManager<Employee> _userManager;
 
 
-        public EmployeeService(IEmployeeRepo employee , IMapper mapper, IDepartmentService departmentService)
+        public EmployeeService(IEmployeeRepo employee , IMapper mapper, IDepartmentService departmentService, UserManager<Employee> userManger)
         {
             this.employee = employee;
             this.mapper = mapper;
             this.departmentService = departmentService;
+            this._userManager = userManger;
 
         }
 
-        public Response<int> Create(CreateEmployeeVM createEmployee)
+        public Response<string> Create(CreateEmployeeVM createEmployee)
         {
             try
             {
@@ -46,13 +51,13 @@ namespace MVC.BLL.Services.Implementaion
 
                 var added = employee.Add(emp);
                 if (!added)
-                    return new Response<int>(0, "Could not add employee", true);
+                    return new Response<string>(null, "Could not add employee", true);
 
-                return new Response<int>(emp.Id, null, false);
+                return new Response<string>(emp.Id, null, false);
             }
             catch (Exception ex)
             { 
-                return new Response<int>(0, ex.Message, true);
+                return new Response<string>(null, ex.Message, true);
             }
         }
 
@@ -95,7 +100,7 @@ namespace MVC.BLL.Services.Implementaion
             }
         }
 
-        public Response<bool> ToggleStatus(int Id)
+        public Response<bool> ToggleStatus(string Id)
         {
             try
             {
@@ -131,7 +136,7 @@ namespace MVC.BLL.Services.Implementaion
                 return new Response<List<GetEmployeeVM>>(null, ex.Message, true);
             }
         }
-        public Response<GetEmployeeVM> GetById(int Id)
+        public Response<GetEmployeeVM> GetById(string Id)
         {
             try
             {
@@ -184,5 +189,37 @@ namespace MVC.BLL.Services.Implementaion
                 return new Response<List<GetEmployeeVM>>(null, ex.Message, true);
             }
         }
+
+        public async Task<IdentityResult> RegisterEmployeeAsync(RegisterEmployeeVM model)
+        {
+
+            string? imageName = null;
+            if (model.Image != null)
+            {
+                imageName = Upload.UploadFile("Files", model.Image);
+            }
+
+            var user = new Employee(
+                model.Name,
+                model.Salary,
+                model.Age,
+                imageName,
+                model.DepartmentId,
+                "Menna") 
+            {
+                UserName = model.UserName
+            };
+
+            var result = await _userManager.CreateAsync(user, model.Password);
+            var IsHaveRole= await _userManager.IsInRoleAsync(user, "User");
+            if (!IsHaveRole)
+            {
+
+                var resultrole = await _userManager.AddToRoleAsync(user, "User");
+            }
+            return result;
+        }
+
     }
-}
+    }
+

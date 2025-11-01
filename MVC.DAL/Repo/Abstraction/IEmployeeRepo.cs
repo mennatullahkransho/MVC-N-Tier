@@ -11,9 +11,9 @@ namespace MVC.DAL.Repo.Abstraction
     {
         public bool Add(Employee employee);
         public bool Edit(Employee employee);
-        public bool ToggleStatus(int Id);
+        public bool ToggleStatus(string Id);
         public List<Employee> GetAll(Expression<Func<Employee, bool>>? Filter = null);
-        public Employee GetById(int Id);
+        public Employee GetById(string Id);
 
 
     }

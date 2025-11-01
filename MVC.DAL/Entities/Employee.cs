@@ -1,12 +1,14 @@
 ﻿
 
 
+using Microsoft.AspNetCore.Identity;
+
 namespace MVC.DAL.Entities
 {
-    public class Employee
+    public class Employee :IdentityUser
     {
         protected Employee() { }
-        public Employee( string name,  double salary, int age,string file,int DeptId, string? createdBy)
+        public Employee( string name,  double salary, int age,string file,int? DeptId, string? createdBy)
         {
            
             Name = name;
@@ -14,12 +16,12 @@ namespace MVC.DAL.Entities
             Age = age;
             File = file;
             DepartmentId = DeptId;
+            EmailConfirmed = true;
             CreatedOn = DateTime.Now;
             CreatedBy = createdBy;
             IsDeleted = false;
           
         }
-        public int Id { get; private set; }
         public string Name { get; private set; }
         public int Age { get; private set; }
         public double Salary { get; private set; }
@@ -32,9 +34,9 @@ namespace MVC.DAL.Entities
         public string? DeletedBy { get; private set; }
         public bool? IsDeleted { get; private set; }
 
-        public int DepartmentId { get; private set; }           
+        public int? DepartmentId { get; private set; }           
         public Department? Department { get; private set; }
-        public bool Update(string name, double salary,int age,string file,int DeptID, string? updatedBy)
+        public bool Update(string name, double salary,int age,string file,int? DeptID, string? updatedBy)
         {
             var user = string.IsNullOrEmpty(updatedBy) ? "System" : updatedBy;
 

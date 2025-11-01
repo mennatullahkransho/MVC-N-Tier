@@ -10,7 +10,7 @@ namespace MVC.BLL.ModelVM.Employee
 {
     public class GetEmployeeVM
     {
-        public int Id { get; set; }
+        public string Id { get; set; }
         public string Name { get; set; }
         public int Age { get; set; }
         public double Salary { get; set; }

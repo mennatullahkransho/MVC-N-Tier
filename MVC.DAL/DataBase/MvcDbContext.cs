@@ -1,6 +1,8 @@
-﻿namespace MVC.DAL.DataBase
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+
+namespace MVC.DAL.DataBase
 {
-    public class MvcDbContext :DbContext
+    public class MvcDbContext :IdentityDbContext
     {
 
         public MvcDbContext(DbContextOptions<MvcDbContext>options):base(options)

@@ -5,20 +5,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MVC.BLL.ModelVM.Employee
+namespace MVC.BLL.ModelVM.Account
 {
-    public class EditEmployeeVM
+    public class RegisterEmployeeVM
     {
-        public string Id { get; set; }
         public string Name { get; set; }
         public double Salary { get; set; }
+
         public int Age { get; set; }
-        public IFormFile? Image { get; set; }
-
-        public string? ExistingImage { get; set; }
-
+        public IFormFile Image { get; set; }
         public int DepartmentId { get; set; }
-        public string? UpdatedBy { get; set; }
-
+        public string UserName { get; set; }
+        public string Password { get; set; }
     }
 }

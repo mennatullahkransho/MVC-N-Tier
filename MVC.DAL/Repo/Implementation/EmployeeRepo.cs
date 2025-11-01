@@ -15,7 +15,7 @@ namespace MVC.DAL.Repo.Implementation
             {
                 var emp = Db.Employees.Add(employee);
                 Db.SaveChanges();
-                if (emp.Entity.Id > 0)
+                if (emp.Entity.Id != null)
                     return true;
                 else return false;
             }
@@ -70,7 +70,7 @@ namespace MVC.DAL.Repo.Implementation
             }
         }
 
-        public Employee GetById(int Id)
+        public Employee GetById(string Id)
         {
             try
             {
@@ -83,7 +83,7 @@ namespace MVC.DAL.Repo.Implementation
             }
         }
 
-        public bool ToggleStatus(int Id)
+        public bool ToggleStatus(string Id)
         {
             try
             {
